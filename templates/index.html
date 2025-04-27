@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GuardianX Dashboard</title>
+    <link rel="stylesheet" href="stylo.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script defer src="{{ url_for('static', filename='scripto.js') }}"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='stylo.css') }}"
+    />
+  </head>
+  <body>
+    <div class="dashboard">
+      <header>
+        <h1>
+          Today: <span id="log-count">0 logs</span>,
+          <span id="alert-count">0 alerts</span>
+        </h1>
+        <div class="controls">
+          <button onclick="startLogs()">▶️ Start Capturing Logs</button>
+          <button onclick="stopLogs()">⏹️ Stop Capturing Logs</button>
+          <input type="text" placeholder="Filter or sort logs" id="filter" />
+          <button id="auto-refresh-toggle">🔄 Auto-refresh</button>
+          <button id="export-btn">⬇️ Export Data</button>
+        </div>
+      </header>
+
+      <div class="main">
+        <section class="live-logs">
+          <h2>Live Logs</h2>
+          <div id="log-container" class="log-container">
+            {% if logs %} {% for log in logs %}
+            <div class="log-entry">
+              [{{ log.timestamp or 'unknown' }}] {{ log.message }}
+            </div>
+            {% endfor %} {% else %}
+            <p>No logs to display yet.</p>
+            {% endif %}
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>IP Address</th>
+                <th>Severity</th>
+              </tr>
+            </thead>
+            <tbody id="logs-table">
+              <!-- Logs will appear here -->
+            </tbody>
+          </table>
+        </section>
+
+        <section class="alerts">
+          <h2>Alerts</h2>
+          {% if alerts %}
+          <ul>
+            {% for alert in alerts %}
+            <li>
+              <strong>{{ alert.timestamp }}</strong> - {{ alert.reason }} - {{
+              alert.message }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <ul id="alert-list"></ul>
+        </section>
+
+        <section class="analytics">
+          <h2>Analytics</h2>
+          <canvas id="logChart" width="400" height="200"></canvas>
+          <div class="top-ips" id="top-ips"></div>
+        </section>
+
+        <aside class="help-panel">
+          <h3>Help</h3>
+          <p>🟥 Red: Alert log</p>
+          <p>🟩 Green: Safe log</p>
+          <p>🧠 "AI detected" badge = flagged by AI</p>
+          <p>🔍 Use filter/search to find logs</p>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>
