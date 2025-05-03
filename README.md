@@ -4,6 +4,10 @@
 
 ---
 
+ ![WhatsApp Image 2025-04-27 at 22 13 38_9fca7cd8](https://github.com/user-attachments/assets/168ce080-d8cd-4d4f-8887-446be6c9fe43)
+
+---
+
 ## 🔍 Features
 
 - Real-time log monitoring  
